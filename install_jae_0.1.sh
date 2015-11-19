@@ -72,7 +72,6 @@ echo
 echo
 echo "Installing Churn Analytics and Text Analytics libraries..."
 sleep 5
-yum -y install git
 git clone https://github.com/sigmawaysinc/JAE0.1.git
 cp JAE0.1/*.gz .
 tar -xzvf "JAE 0.1.tar.gz"

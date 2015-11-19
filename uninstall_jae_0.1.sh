@@ -37,7 +37,6 @@ then
    rm -rf setuptools-1.4.2.tar.gz setuptools-1.4.2
    pip uninstall nltk numpy scipy scikit-learn pandas tornado matplotlib lifelines pyenchant statistics
    rm -rf /root/nltk_data
-   yum -y remove git
    rm -rf JAE0.1 "JAE 0.1.tar.gz" "JAE 0.1"
 else
    echo "Good Decision.. See you next time.."
