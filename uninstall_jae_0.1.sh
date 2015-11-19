@@ -23,7 +23,7 @@ then
    service elasticsearch stop
    service logstash stop
    service httpd stop
-   yum -y remove java-1.7.0-openjdk httpd elasticsearch kibana logstash owncloud php55w php55w-opcache httpd
+   yum -y remove java-1.7.0-openjdk httpd elasticsearch kibana logstash php55w php55w-opcache httpd
    rm -rf /etc/elasticsearch/ /etc/logstash
    userdel kibana
    rm -rf /var/log/kibana.log /var/log/logstash/
@@ -32,7 +32,11 @@ then
    rm -rf /opt/kibana/ /etc/init.d/kibana
    rm -rf /etc/pki/tls/certs/logstash-forwarder.crt
    rm -rf /etc/pki/tls/private/logstash-forwarder.key
-   rm -rf /var/www/html/owncloud/
+   yum -y remove zlib-dev openssl-devel sqlite-devel bzip2-devel lapack lapack-devel blas blas-devel freetype-devel libpng-devel xz-libs
+   rm -rf Python-2.7.6.tar.xz Python-2.7.6
+   rm -rf setuptools-1.4.2.tar.gz setuptools-1.4.2
+   pip uninstall nltk numpy scipy scikit-learn pandas tornado matplotlib lifelines pyenchant statistics
+   rm -rf /root/nltk_data
 else
    echo "Good Decision.. See you next time.."
 fi

@@ -4,13 +4,13 @@
 ##########################################################
 
 #title           :install_jae_0.1.sh
-#description     :This script will install Java 1.7, Own cloud, ELK stack. Login as root to install this script.
+#description     :This script will install Java 1.7, ELK stack. Login as root to install this script.
 #author          :Sigmaways - Ram Rengamani
 #date            :20151102
 #application     :JAE
 #version         :0.1
 #usage           :./install_jae_0.1.sh
-#notes           :Installs Java 1.7, httpd, own cloud, elastic search, logstash and Kibana for log analytics.
+#notes           :Installs Java 1.7, httpd, elastic search, logstash and Kibana for log analytics.
 #OS_version      :Cent OS 6.7-release
 
 ##########################################################
@@ -34,8 +34,6 @@
 main() {
 
 dependencies
-
-owncloud
 
 elasticsearch
 
@@ -65,29 +63,58 @@ sleep 5
 wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 rpm -Uvh epel-release-6*.rpm
 yum -y install java-1.7.0-openjdk httpd
-
-    rpm --import https://download.owncloud.org/download/repositories/stable/CentOS_6/repodata/repomd.xml.key
-    wget http://download.owncloud.org/download/repositories/stable/CentOS_6/ce:stable.repo -O /etc/yum.repos.d/ce:stable.repo
-    yum clean expire-cache
-    rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
-
 service httpd start
+echo "Installing Python 2.7, NLTK and other machine learning libraries..."
+sleep 5
+installPythonDependencies
 
 }
 
 ##########################################################
 
-### owncloud
+### installPythonDependencies
 
 ##########################################################
 
-owncloud() {
+installPythonDependencies() {
 
-echo "Installing php 55 and own cloud…"
-sleep 5
-    yum -y install php55w php55w-opcache
-    yum -y install owncloud
-    service httpd restart
+yum -y update
+yum groupinstall -y 'development tools'
+
+yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel lapack lapack-devel blas blas-devel freetype-devel libpng-devel xz-libs
+
+
+wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
+xz -d Python-2.7.6.tar.xz
+tar -xvf Python-2.7.6.tar
+
+cd Python-2.7.6
+
+./configure --prefix=/usr/local
+make
+make altinstall
+export PATH="/usr/local/bin:$PATH"
+
+wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.2.tar.gz
+tar -xvf setuptools-1.4.2.tar.gz
+
+cd setuptools-1.4.2
+
+python2.7 setup.py install
+
+curl https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py | python2.7 -
+
+pip install nltk
+python2.7 -m nltk.downloader all
+pip install numpy
+pip install scipy
+pip install scikit-learn
+pip install pandas
+pip install tornado
+pip install matplotlib
+pip install lifelines
+pip install pyenchant
+pip install statistics
 
 }
 
